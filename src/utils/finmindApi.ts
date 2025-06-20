@@ -1,7 +1,3 @@
-import axios from 'axios';
-
-const FINMIND_API_URL = 'https://api.finmindtrade.com/api/v4/data';
-const token = process.env.NEXT_PUBLIC_FINMIND_API_TOKEN;
 export interface MonthRevenue {
   date: string;
   stock_id: string;
@@ -26,26 +22,9 @@ export interface FinMindResponse {
 }
 
 export const fetchMonthRevenue = async (stockId: string): Promise<FinMindResponse> => {
-  const today = new Date();
-  const sixYearsAgo = new Date(today.getFullYear() - 6, today.getMonth(), today.getDate());
-
-  const params = {
-    dataset: 'TaiwanStockMonthRevenue',
-    data_id: stockId,
-    start_date: sixYearsAgo.toISOString().split('T')[0],
-    end_date: today.toISOString().split('T')[0],
-  };
-
-  try {
-    const response = await axios.get(FINMIND_API_URL, {
-      params,
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    });
-    return response.data;
-  } catch (error) {
-    console.error("Error fetching month revenue:", error);
-    throw error;
+  const res = await fetch(`/api/finmind?stockId=${stockId}`);
+  if (!res.ok) {
+    throw new Error('Failed to fetch month revenue');
   }
+  return res.json();
 }; 
