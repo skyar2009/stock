@@ -94,11 +94,6 @@ const SearchBar: React.FC<SearchBarProps> = ({ onSearch }) => {
                 </>
               ),
             }}
-            onKeyDown={e => {
-              if (e.key === 'Enter') {
-                onSearch();
-              }
-            }}
           />
         )}
         noOptionsText={inputValue ? '未找到匹配' : '請輸入股票代碼或名稱'}
