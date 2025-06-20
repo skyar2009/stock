@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 const FINMIND_API_URL = 'https://api.finmindtrade.com/api/v4/data';
-
+const token = process.env.NEXT_PUBLIC_FINMIND_API_TOKEN;
 export interface MonthRevenue {
   date: string;
   stock_id: string;
@@ -37,7 +37,12 @@ export const fetchMonthRevenue = async (stockId: string): Promise<FinMindRespons
   };
 
   try {
-    const response = await axios.get(FINMIND_API_URL, { params });
+    const response = await axios.get(FINMIND_API_URL, {
+      params,
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
     return response.data;
   } catch (error) {
     console.error("Error fetching month revenue:", error);

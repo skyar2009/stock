@@ -61,7 +61,7 @@ const RevenueTable: React.FC<RevenueTableProps> = ({ data }) => {
           <Table sx={{ minWidth: 1200, width: '100%', borderCollapse: 'separate', borderSpacing: 0 }} aria-label="revenue table">
             <TableHead>
               <TableRow sx={{ backgroundColor: '#f5f5f5' }}>
-                <TableCell className="sticky-column" sx={{ borderRight: '1px solid #e0e0e0' }}>年度/月份</TableCell>
+                <TableCell className="sticky-column" sx={{ backgroundColor: '#f5f5f5', borderRight: '1px solid #e0e0e0' }}>年度/月份</TableCell>
                 {recentData.map((item, idx) => (
                   <TableCell key={item.date} align="right" sx={{ borderRight: idx === recentData.length - 1 ? 0 : '1px solid #e0e0e0' }}>{item.date.substring(0, 7).replace('-', '')}</TableCell>
                 ))}
