@@ -75,7 +75,9 @@ const SearchBar: React.FC<SearchBarProps> = ({ onSearch }) => {
         inputValue={inputValue}
         onInputChange={(_, value) => setInputValue(value)}
         onChange={(_, value) => {
-          onSearch(value.stock_id, value.stock_name);
+          if (value && typeof value !== 'string') {
+            onSearch(value.stock_id, value.stock_name);
+          }
         }}
         renderInput={params => (
           <TextField
