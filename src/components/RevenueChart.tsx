@@ -13,7 +13,7 @@ import {
   Legend,
 } from 'recharts';
 import { MonthRevenue } from '@/utils/finmindApi';
-import { Paper, Typography, Box, Button } from '@mui/material';
+import { Paper, Box, Button } from '@mui/material';
 
 interface RevenueChartProps {
   data: MonthRevenue[];

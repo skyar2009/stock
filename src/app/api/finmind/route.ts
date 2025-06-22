@@ -21,6 +21,22 @@ const adjustMonth = (dateStr: string): string => {
   return `${adjustedYear}-${adjustedMonth.toString().padStart(2, '0')}`;
 };
 
+interface FinMindDataItem {
+  date: string;
+  stock_id: string;
+  country: string;
+  revenue: number;
+  revenue_month: number;
+  revenue_year: number;
+  "年月": string;
+  "當月營收": number;
+  "上月比較增減(%)": number;
+  "去年同月增減(%)": number;
+  "當月累計營收": number;
+  "去年累計增減(%)": number;
+  "備註": string;
+}
+
 export async function GET(req: NextRequest) {
   const { searchParams } = new URL(req.url);
   const stockId = searchParams.get('stockId');
@@ -47,7 +63,7 @@ export async function GET(req: NextRequest) {
     });
     
     // 修正返回数据中的月份
-    const adjustedData = response.data.data.map((item: any) => ({
+    const adjustedData = response.data.data.map((item: FinMindDataItem) => ({
       ...item,
       date: adjustMonth(item.date)
     }));

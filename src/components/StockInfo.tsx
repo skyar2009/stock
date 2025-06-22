@@ -1,7 +1,7 @@
 'use client';
 
 import React from 'react';
-import { Typography, Box, Paper } from '@mui/material';
+import { Typography, Paper } from '@mui/material';
 
 interface StockInfoProps {
   stockId: string;
