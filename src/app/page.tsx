@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Box, CircularProgress, Alert } from '@mui/material';
 import Layout from '@/components/Layout';
 import SearchBar from '@/components/SearchBar';
@@ -55,6 +55,11 @@ export default function Home() {
       setLoading(false);
     }
   };
+
+  // 页面加载时自动搜索2330的数据
+  useEffect(() => {
+    handleSearch('2330', '台積電');
+  }, []);
 
   return (
     <Layout>

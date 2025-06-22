@@ -4,6 +4,23 @@ import axios from 'axios';
 const FINMIND_API_URL = 'https://api.finmindtrade.com/api/v4/data';
 const token = process.env.NEXT_PUBLIC_FINMIND_API_TOKEN;
 
+// 修正月份偏差的函数
+const adjustMonth = (dateStr: string): string => {
+  const [year, month] = dateStr.split('-');
+  const yearNum = parseInt(year);
+  const monthNum = parseInt(month);
+  
+  let adjustedYear = yearNum;
+  let adjustedMonth = monthNum - 1;
+  
+  if (adjustedMonth === 0) {
+    adjustedMonth = 12;
+    adjustedYear = yearNum - 1;
+  }
+  
+  return `${adjustedYear}-${adjustedMonth.toString().padStart(2, '0')}`;
+};
+
 export async function GET(req: NextRequest) {
   const { searchParams } = new URL(req.url);
   const stockId = searchParams.get('stockId');
@@ -28,7 +45,17 @@ export async function GET(req: NextRequest) {
         Authorization: `Bearer ${token}`,
       },
     });
-    return NextResponse.json(response.data);
+    
+    // 修正返回数据中的月份
+    const adjustedData = response.data.data.map((item: any) => ({
+      ...item,
+      date: adjustMonth(item.date)
+    }));
+    
+    return NextResponse.json({
+      ...response.data,
+      data: adjustedData
+    });
   } catch (error: unknown) {
     let message = 'Unknown error';
     if (error instanceof Error) {

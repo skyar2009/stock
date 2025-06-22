@@ -34,6 +34,11 @@ const StyledTableContainer = styled(TableContainer)({
   }
 });
 
+// 格式化数字，添加逗号分隔符
+const formatNumber = (num: number): string => {
+  return num.toLocaleString('zh-CN');
+};
+
 const RevenueTable: React.FC<RevenueTableProps> = ({ data }) => {
   // 按日期排序，确保日期从左到右增加
   const sortedData = [...data].sort((a, b) =>
@@ -61,15 +66,15 @@ const RevenueTable: React.FC<RevenueTableProps> = ({ data }) => {
           <Table sx={{ minWidth: 1200, width: '100%', borderCollapse: 'separate', borderSpacing: 0 }} aria-label="revenue table">
             <TableHead>
               <TableRow sx={{ backgroundColor: '#f5f5f5' }}>
-                <TableCell className="sticky-column" sx={{ backgroundColor: '#f5f5f5', borderRight: '1px solid #e0e0e0' }}>年度/月份</TableCell>
+                <TableCell className="sticky-column" sx={{ backgroundColor: '#f5f5f5', borderRight: '1px solid #e0e0e0', whiteSpace: 'nowrap', fontWeight: 'bold' }}>年度/月份</TableCell>
                 {recentData.map((item, idx) => (
-                  <TableCell key={item.date} align="right" sx={{ borderRight: idx === recentData.length - 1 ? 0 : '1px solid #e0e0e0' }}>{item.date.substring(0, 7).replace('-', '')}</TableCell>
+                  <TableCell key={item.date} align="right" sx={{ borderRight: idx === recentData.length - 1 ? 0 : '1px solid #e0e0e0', whiteSpace: 'nowrap' }}>{item.date.substring(0, 7).replace('-', '')}</TableCell>
                 ))}
               </TableRow>
             </TableHead>
             <TableBody>
               {([
-                ['每月營收（億元）', (item: MonthRevenue) => (item.revenue / 100000000).toFixed(2)],
+                ['每月營收（千元）', (item: MonthRevenue) => formatNumber(item.revenue / 1000)],
                 ['單月營收年增率 (%)', (item: MonthRevenue) => (item.singleMonthYoY !== null && item.singleMonthYoY !== undefined ? item.singleMonthYoY.toFixed(2) : '-')],
               ] as [string, (item: MonthRevenue) => string][]).map(([label, render], idx) => (
                 <TableRow key={label} sx={{ backgroundColor: idx % 2 === 0 ? '#fff' : '#f5f5f5' }}>
@@ -77,12 +82,12 @@ const RevenueTable: React.FC<RevenueTableProps> = ({ data }) => {
                     component="th"
                     scope="row"
                     className="sticky-column"
-                    sx={{ backgroundColor: idx % 2 === 0 ? '#fff' : '#f5f5f5', borderRight: '1px solid #e0e0e0' }}
+                    sx={{ backgroundColor: idx % 2 === 0 ? '#fff' : '#f5f5f5', borderRight: '1px solid #e0e0e0', whiteSpace: 'nowrap', fontWeight: 'bold' }}
                   >
                     {label}
                   </TableCell>
                   {recentData.map((item, colIdx) => (
-                    <TableCell key={item.date} align="right" sx={{ borderRight: colIdx === recentData.length - 1 ? 0 : '1px solid #e0e0e0' }}>{render(item)}</TableCell>
+                    <TableCell key={item.date} align="right" sx={{ borderRight: colIdx === recentData.length - 1 ? 0 : '1px solid #e0e0e0', whiteSpace: 'nowrap' }}>{render(item)}</TableCell>
                   ))}
                 </TableRow>
               ))}
@@ -92,7 +97,7 @@ const RevenueTable: React.FC<RevenueTableProps> = ({ data }) => {
       </Box>
       <Box sx={{ p: 2, textAlign: 'right' }}>
         <Typography variant="caption" color="textSecondary">
-          圖表單位：億元，數據來自公開資訊觀測站
+          圖表單位：千元，數據來自公開資訊觀測站
         </Typography>
         <br />
         <Typography variant="caption" color="textSecondary">

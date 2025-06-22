@@ -20,7 +20,7 @@ const SearchBar: React.FC<SearchBarProps> = ({ onSearch }) => {
   const [inputValue, setInputValue] = useState('');
   const [loading, setLoading] = useState(false);
   const stocksRef = useRef<StockOption[] | null>(null);
-
+  const inputRef = useRef<HTMLInputElement>(null);
 
   // 只加载一次股票列表
   useEffect(() => {
@@ -77,11 +77,22 @@ const SearchBar: React.FC<SearchBarProps> = ({ onSearch }) => {
         onChange={(_, value) => {
           if (value && typeof value !== 'string') {
             onSearch(value.stock_id, value.stock_name);
+            // 选择后自动失去焦点
+            setTimeout(() => {
+              if (inputRef.current) {
+                inputRef.current.blur();
+              }
+            }, 100);
           }
+        }}
+        onFocus={() => {
+          // 点击时清除内容
+          setInputValue('');
         }}
         renderInput={params => (
           <TextField
             {...params}
+            inputRef={inputRef}
             label="輸入台/美股代號, 查看公司價值"
             variant="outlined"
             fullWidth
