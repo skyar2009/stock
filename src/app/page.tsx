@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
-import { Box, CircularProgress, Alert } from '@mui/material';
+import { Box, CircularProgress, Alert, Container } from '@mui/material';
 import Layout from '@/components/Layout';
 import SearchBar from '@/components/SearchBar';
 import StockInfo from '@/components/StockInfo';
@@ -62,27 +62,29 @@ export default function Home() {
   }, []);
 
   return (
-    <Layout>
-      <SearchBar
-        onSearch={handleSearch}
-      />
-      {loading && (
-        <Box sx={{ display: 'flex', justifyContent: 'center', my: 4 }}>
-          <CircularProgress />
-        </Box>
-      )}
-      {error && (
-        <Alert severity="error" sx={{ my: 2 }}>
-          {error}
-        </Alert>
-      )}
-      {data.length > 0 && (
-        <>
-          <StockInfo stockId={searchedStockId} stockName={searchedStockName} />
-          <RevenueChart data={data} />
-          <RevenueTable data={data} />
-        </>
-      )}
-    </Layout>
+    <Box sx={{ minHeight: '100vh', backgroundColor: '#f5f5f5' }}>
+      <Layout>
+        <SearchBar onSearch={handleSearch} />
+      </Layout>
+      <Container maxWidth="lg" sx={{ mt: 2, mb: 4 }}>
+        {loading && (
+          <Box sx={{ display: 'flex', justifyContent: 'center', my: 4 }}>
+            <CircularProgress />
+          </Box>
+        )}
+        {error && (
+          <Alert severity="error" sx={{ my: 2 }}>
+            {error}
+          </Alert>
+        )}
+        {data.length > 0 && (
+          <>
+            <StockInfo stockId={searchedStockId} stockName={searchedStockName} />
+            <RevenueChart data={data} />
+            <RevenueTable data={data} />
+          </>
+        )}
+      </Container>
+    </Box>
   );
 }

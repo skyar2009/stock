@@ -1,7 +1,8 @@
 'use client';
 
 import React, { useState, useEffect, useRef } from 'react';
-import { TextField, Box, Autocomplete, CircularProgress } from '@mui/material';
+import { TextField, Box, Autocomplete, CircularProgress, InputAdornment } from '@mui/material';
+import SearchIcon from '@mui/icons-material/Search';
 
 interface StockOption {
   industry_category: string;
@@ -65,7 +66,7 @@ const SearchBar: React.FC<SearchBarProps> = ({ onSearch }) => {
   }, [inputValue]);
 
   return (
-    <Box sx={{ display: 'flex', alignItems: 'center', mb: 4, justifyContent: 'center', width: '100%' }}>
+    <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', width: '100%' }}>
       <Autocomplete
         sx={{ maxWidth: 600, width: '100%' }}
         freeSolo
@@ -89,18 +90,26 @@ const SearchBar: React.FC<SearchBarProps> = ({ onSearch }) => {
           // 点击时清除内容
           setInputValue('');
         }}
+        disableClearable
         renderInput={params => (
           <TextField
             {...params}
             inputRef={inputRef}
-            label="輸入台/美股代號, 查看公司價值"
+            placeholder="輸入台/美股代號, 查看公司價值"
             variant="outlined"
             fullWidth
+            size="small"
+            InputLabelProps={{
+              shrink: false,
+            }}
             InputProps={{
               ...params.InputProps,
               endAdornment: (
                 <>
                   {loading ? <CircularProgress color="inherit" size={20} /> : null}
+                  <InputAdornment position="end">
+                    <SearchIcon color="action" />
+                  </InputAdornment>
                   {params.InputProps.endAdornment}
                 </>
               ),
@@ -108,6 +117,11 @@ const SearchBar: React.FC<SearchBarProps> = ({ onSearch }) => {
           />
         )}
         noOptionsText={inputValue ? '未找到匹配' : '請輸入股票代碼或名稱'}
+        slotProps={{
+          popper: {
+            placement: 'bottom-start'
+          }
+        }}
       />
     </Box>
   );

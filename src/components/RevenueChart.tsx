@@ -19,6 +19,43 @@ interface RevenueChartProps {
   data: MonthRevenue[];
 }
 
+// 自定义Tooltip组件
+interface TooltipProps {
+  active?: boolean;
+  payload?: Array<{
+    name: string;
+    value: number | string;
+    color: string;
+  }>;
+  label?: string;
+}
+
+const CustomTooltip = ({ active, payload, label }: TooltipProps) => {
+  if (active && payload && payload.length) {
+    return (
+      <div style={{
+        backgroundColor: 'rgba(0, 0, 0, 0.8)',
+        border: '1px solid #ccc',
+        borderRadius: '4px',
+        padding: '10px',
+        color: 'white'
+      }}>
+        <p style={{ margin: '0 0 5px 0', fontWeight: 'bold' }}>{`${label}`}</p>
+        {payload.map((entry, index) => (
+          <p key={index} style={{ 
+            margin: '2px 0', 
+            color: entry.color,
+            fontSize: '14px'
+          }}>
+            {`${entry.name}: ${entry.value}`}
+          </p>
+        ))}
+      </div>
+    );
+  }
+  return null;
+};
+
 const RevenueChart: React.FC<RevenueChartProps> = ({ data }) => {
   const chartData = data.map(item => ({
     name: item.date.substring(0, 7),
@@ -73,7 +110,7 @@ const RevenueChart: React.FC<RevenueChartProps> = ({ data }) => {
     .map(item => item.name);
 
   return (
-    <Paper sx={{ p: 2, mb: 4 }}>
+    <Paper sx={{ p: 2, mb: 2 }}>
         <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 2 }}>
             <Button variant="contained">每月營收</Button>
             <Button variant="contained">近 5 年</Button>
@@ -108,7 +145,7 @@ const RevenueChart: React.FC<RevenueChartProps> = ({ data }) => {
             tickFormatter={v => v === maxGrowth ? '%' : (v != null ? Number(v).toFixed(0) : '')}
             axisLine={false}
           />
-          <Tooltip />
+          <Tooltip content={<CustomTooltip />} />
           <Legend />
           <Bar yAxisId="left" dataKey="每月營收（億元）" fill="#ffc658" />
           <Line yAxisId="right" type="monotone" dataKey="單月營收年增率 (%)" stroke="#d32f2f" dot={false} strokeWidth={2} />

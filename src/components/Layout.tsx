@@ -1,22 +1,23 @@
 'use client';
 
 import React from 'react';
-import { ThemeProvider, CssBaseline, Container, Box } from '@mui/material';
+import { ThemeProvider, CssBaseline, Container, Paper } from '@mui/material';
 import theme from '@/theme/muiTheme';
 
 const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline />
-      <Box sx={{ 
-        minHeight: '100vh', 
-        backgroundColor: '#f5f5f5',
-        py: 2
+      <Paper sx={{ 
+        width: '100%', 
+        py: 2,
+        borderRadius: 0,
+        boxShadow: '0 2px 4px rgba(0,0,0,0.1)'
       }}>
-        <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
+        <Container maxWidth="lg">
           {children}
         </Container>
-      </Box>
+      </Paper>
     </ThemeProvider>
   );
 };
